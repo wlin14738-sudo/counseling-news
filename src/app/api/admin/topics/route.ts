@@ -30,6 +30,30 @@ const fields = {
   summaryZh: z.string().optional(),
   body: z.string().optional(),
   bodyZh: z.string().optional(),
+  timeline: z
+    .array(
+      z.object({
+        year: z.string().default(""),
+        titleZh: z.string().default(""),
+        titleEn: z.string().default(""),
+        bodyZh: z.string().default(""),
+        bodyEn: z.string().default(""),
+      }),
+    )
+    .optional(),
+  figures: z
+    .array(
+      z.object({
+        nameZh: z.string().default(""),
+        nameEn: z.string().default(""),
+        years: z.string().default(""),
+        titleZh: z.string().default(""),
+        titleEn: z.string().default(""),
+        bioZh: z.string().default(""),
+        bioEn: z.string().default(""),
+      }),
+    )
+    .optional(),
   category: z.string().optional(),
   school: z.string().optional(),
   status: z.enum(["draft", "published"]).optional(),
@@ -83,6 +107,8 @@ export async function POST(req: Request) {
       summaryZh: data.summaryZh || "",
       body: data.body || "",
       bodyZh: data.bodyZh || "",
+      timeline: data.timeline || [],
+      figures: data.figures || [],
       category: data.category || "school",
       school: data.school || "",
       status: data.status || "draft",

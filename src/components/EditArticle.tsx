@@ -40,6 +40,20 @@ export default function EditArticle({ article }: Props) {
   }
 
   async function save(status?: string) {
+    if (status === "published") {
+      if (!form.titleZh.trim()) {
+        setMsg("请先填写中文标题再发布");
+        return;
+      }
+      if (!form.category) {
+        setMsg("请先选择板块再发布");
+        return;
+      }
+      if (!form.summaryZh.trim() && !form.summary.trim()) {
+        setMsg("请先填写摘要（中文或英文）再发布");
+        return;
+      }
+    }
     setLoading(true);
     setMsg("");
     try {

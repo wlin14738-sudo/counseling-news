@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
+import type { FigureEntry, TimelineEntry } from "@/lib/topicTypes";
 import EditTopic from "@/components/EditTopic";
 import DeleteTopicButton from "@/components/DeleteTopicButton";
 
@@ -42,6 +43,8 @@ export default async function AdminEditTopicPage({
           summaryZh: topic.summaryZh,
           body: topic.body,
           bodyZh: topic.bodyZh,
+          timeline: (topic.timeline as TimelineEntry[]) || [],
+          figures: (topic.figures as FigureEntry[]) || [],
           category: topic.category,
           school: topic.school,
           status: topic.status,

@@ -67,6 +67,9 @@ model Topic {
   // Markdown 正文（英文原文 / 中文）
   body        String   @default("")
   bodyZh      String   @default("")
+  // 结构化时间轴与核心人物，JSON 数组
+  timeline    Json     @default("[]")
+  figures     Json     @default("[]")
   category    String   @default("school")
   school      String   @default("")
   // "draft" | "published"

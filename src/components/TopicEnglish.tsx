@@ -1,15 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import Markdown from "./Markdown";
+import TopicBody from "./TopicBody";
+import type { FigureEntry, TimelineEntry } from "@/lib/topicTypes";
 
 type Props = {
   title: string;
   summary: string;
   body: string;
+  timeline?: TimelineEntry[];
+  figures?: FigureEntry[];
 };
 
-export default function TopicEnglish({ title, summary, body }: Props) {
+export default function TopicEnglish({
+  title,
+  summary,
+  body,
+  timeline,
+  figures,
+}: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,7 +34,7 @@ export default function TopicEnglish({ title, summary, body }: Props) {
         <div className="mt-4 space-y-3">
           <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
           {summary && <p className="text-sm text-slate-600">{summary}</p>}
-          <Markdown content={body} />
+          <TopicBody body={body} timeline={timeline} figures={figures} lang="en" />
         </div>
       )}
     </div>

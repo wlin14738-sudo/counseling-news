@@ -5,6 +5,7 @@ import SubscribeForm from "@/components/SubscribeForm";
 import { Prisma } from "@prisma/client";
 import { CATEGORIES, categoryLabel, isValidCategory } from "@/lib/categories";
 import { SCHOOLS, schoolLabel, isValidSchool } from "@/lib/schools";
+import SchoolFilter from "@/components/SchoolFilter";
 
 export const dynamic = "force-dynamic";
 
@@ -129,31 +130,15 @@ export default async function HomePage({
             ))}
           </nav>
 
-          <nav className="flex flex-wrap gap-2">
-            <Link
-              href={schoolHref("")}
-              className={`rounded-full px-4 py-1.5 text-sm ${
-                school === ""
-                  ? "bg-violet-600 text-white"
-                  : "bg-white text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              全部流派
-            </Link>
-            {SCHOOLS.map((s) => (
-              <Link
-                key={s.slug}
-                href={schoolHref(s.slug)}
-                className={`rounded-full px-4 py-1.5 text-sm ${
-                  school === s.slug
-                    ? "bg-violet-600 text-white"
-                    : "bg-white text-slate-600 hover:bg-slate-100"
-                }`}
-              >
-                {s.label}
-              </Link>
-            ))}
-          </nav>
+          <SchoolFilter
+            current={school}
+            allHref={schoolHref("")}
+            items={SCHOOLS.map((s) => ({
+              slug: s.slug,
+              label: s.label,
+              href: schoolHref(s.slug),
+            }))}
+          />
 
           <form method="get" className="flex flex-wrap items-center gap-2">
             <input

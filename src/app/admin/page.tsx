@@ -25,6 +25,11 @@ export default async function AdminPage({
   const category = (sp.category as string) || "";
   const school = (sp.school as string) || "";
 
+  // Auto-clean drafts that have neither an English nor a Chinese title (garbage rows).
+  const cleanedCount = await prisma.article
+    .deleteMany({ where: { status: "draft", title: "", titleZh: "" } })
+    .then((r) => r.count);
+
   const draftWhere = {
     status: "draft",
     ...(sourceId && Number.isFinite(sourceId) ? { sourceId } : {}),
@@ -95,6 +100,12 @@ export default async function AdminPage({
           <LogoutButton />
         </div>
       </div>
+
+      {cleanedCount > 0 && (
+        <p className="rounded-lg bg-emerald-50 px-4 py-2 text-sm text-emerald-700">
+          已自动清理 {cleanedCount} 篇缺少标题的无效草稿。
+        </p>
+      )}
 
       <section>
         <h2 className="mb-3 text-lg font-semibold text-slate-900">待审核队列</h2>
