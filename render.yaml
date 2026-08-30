@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     buildCommand: pnpm install && pnpm prisma generate && pnpm build
-    startCommand: sh -c "pnpm exec next start -p $PORT"
+    startCommand: sh -c "pnpm exec next start -p $PORT -H 0.0.0.0"
     healthCheckPath: /
     autoDeploy: true
     envVars:
