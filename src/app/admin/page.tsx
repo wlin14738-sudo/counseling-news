@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/utils";
 import LogoutButton from "@/components/LogoutButton";
 import DeleteArticleButton from "@/components/DeleteArticleButton";
 import FetchButton from "@/components/FetchButton";
+import DraftQueue from "@/components/DraftQueue";
 import { CATEGORIES, categoryLabel } from "@/lib/categories";
 import { SCHOOLS, schoolLabel } from "@/lib/schools";
 import { titlesSimilar } from "@/lib/dedup";
@@ -56,6 +57,17 @@ export default async function AdminPage({
       .map((d) => d.id),
   );
 
+  const draftItems = drafts.map((a) => ({
+    id: a.id,
+    title: a.title,
+    titleZh: a.titleZh,
+    category: a.category,
+    school: a.school,
+    aiConfidence: a.aiConfidence,
+    fetchedAt: a.fetchedAt.toISOString(),
+    sourceName: a.source.nameZh || a.source.name,
+  }));
+
   return (
     <div className="container-page space-y-6">
       <div className="flex items-center justify-between">
@@ -68,6 +80,9 @@ export default async function AdminPage({
         <div className="flex items-center gap-3">
           <span className="text-sm text-slate-500">{session?.email}</span>
           <FetchButton />
+          <Link href="/admin/articles/new" className="btn-primary">
+            手动添加
+          </Link>
           <Link href="/admin/sources" className="btn-secondary">
             来源管理
           </Link>
@@ -117,40 +132,7 @@ export default async function AdminPage({
             </Link>
           )}
         </form>
-        {drafts.length === 0 ? (
-          <div className="card p-8 text-center text-slate-500">
-            暂无待审核内容。运行 <code>/api/cron/fetch</code> 拉取最新资讯。
-          </div>
-        ) : (
-          <div className="card divide-y divide-slate-100">
-            {drafts.map((a) => (
-              <div key={a.id} className="flex items-center justify-between gap-4 p-4">
-                <div className="min-w-0">
-                  <p className="truncate font-medium text-slate-900">
-                    {a.titleZh || a.title}
-                  </p>
-                  <p className="truncate text-sm text-slate-500">
-                    {duplicateDraftIds.has(a.id) && (
-                      <span className="mr-2 rounded bg-amber-100 px-1.5 py-0.5 text-xs text-amber-700">
-                        ⚠️ 疑似重复
-                      </span>
-                    )}
-                    {categoryLabel(a.category) || "未分类"} ·{" "}
-                    {schoolLabel(a.school) || "未标流派"} ·{" "}
-                    {a.source.nameZh || a.source.name} · {formatDate(a.fetchedAt)} · AI
-                    置信度 {Math.round(a.aiConfidence * 100)}%
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  <Link href={`/admin/articles/${a.id}`} className="btn-secondary">
-                    编辑
-                  </Link>
-                  <DeleteArticleButton id={a.id} />
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <DraftQueue drafts={draftItems} duplicateIds={[...duplicateDraftIds]} />
       </section>
 
       <section>
