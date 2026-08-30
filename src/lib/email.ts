@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { schoolLabel } from "./schools";
 
 export function emailEnabled(): boolean {
   return Boolean(process.env.RESEND_API_KEY);
@@ -24,6 +25,7 @@ export type DigestArticle = {
   title: string;
   summaryZh: string;
   keywords: string;
+  school: string;
   id: number;
 };
 
@@ -73,6 +75,7 @@ export async function sendDailyDigest(
   <a href="${siteUrl()}/articles/${a.id}"><strong>${a.titleZh}</strong></a>
   <p>${a.summaryZh}</p>
   ${a.keywords ? `<p style="margin:4px 0;"><small>关键词：${a.keywords}</small></p>` : ""}
+  ${a.school ? `<p style="margin:4px 0;"><small>流派：${schoolLabel(a.school)}</small></p>` : ""}
   <small>英文原题：${a.title}</small>
 </li>`,
     )

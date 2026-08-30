@@ -1,0 +1,4 @@
+{
+  "build_command": "pnpm prisma generate && pnpm build",
+  "start_command": "pnpm exec next start -p $PORT -H 0.0.0.0"
+}

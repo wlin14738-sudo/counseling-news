@@ -27,6 +27,9 @@ export default function RootLayout({
               <Link href="/" className="hover:text-brand-600">
                 首页
               </Link>
+              <Link href="/topics" className="hover:text-brand-600">
+                知识库
+              </Link>
               <Link href="/#subscribe" className="hover:text-brand-600">
                 订阅
               </Link>

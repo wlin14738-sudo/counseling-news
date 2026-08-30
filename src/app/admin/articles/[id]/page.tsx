@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
 import { formatDate } from "@/lib/utils";
 import EditArticle from "@/components/EditArticle";
+import DeleteArticleButton from "@/components/DeleteArticleButton";
 
 export const metadata: Metadata = { title: "编辑文章" };
 
@@ -35,9 +36,12 @@ export default async function AdminEditPage({
       </Link>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">编辑文章</h1>
-        <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
-          {statusLabel}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
+            {statusLabel}
+          </span>
+          <DeleteArticleButton id={article.id} label="删除" redirectTo="/admin" />
+        </div>
       </div>
       <p className="text-sm text-slate-500">
         来源：{article.source.nameZh || article.source.name} · 抓取于{" "}
@@ -60,6 +64,7 @@ export default async function AdminEditPage({
           summaryZh: article.summaryZh,
           author: article.author,
           category: article.category,
+          school: article.school,
           keywords: article.keywords,
           status: article.status,
         }}

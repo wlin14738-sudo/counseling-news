@@ -11,6 +11,7 @@ type Props = {
   sourceName?: string;
   sourceNameZh?: string;
   category?: string;
+  school?: string;
   keywords?: string;
 };
 
@@ -24,6 +25,7 @@ export default function ArticleCard({
   sourceName,
   sourceNameZh,
   category,
+  school,
   keywords,
 }: Props) {
   const zhTitle = titleZh || title;
@@ -37,6 +39,11 @@ export default function ArticleCard({
           {category && (
             <span className="rounded-full bg-brand-50 px-2.5 py-0.5 font-medium text-brand-700">
               {category}
+            </span>
+          )}
+          {school && (
+            <span className="rounded-full bg-violet-50 px-2.5 py-0.5 font-medium text-violet-700">
+              {school}
             </span>
           )}
           {sourceLabel && <span className="text-slate-600">{sourceLabel}</span>}

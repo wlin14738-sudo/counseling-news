@@ -25,6 +25,7 @@ const patchSchema = z.object({
   summaryZh: z.string().optional(),
   author: z.string().optional(),
   category: z.string().optional(),
+  school: z.string().optional(),
   keywords: z.string().optional(),
   status: z.enum(["draft", "published", "rejected"]).optional(),
 });

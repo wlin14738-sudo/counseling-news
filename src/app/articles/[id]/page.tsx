@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 import { categoryLabel } from "@/lib/categories";
+import { schoolLabel } from "@/lib/schools";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,11 @@ export default async function ArticlePage({
           {article.category && (
             <span className="rounded-full bg-brand-50 px-3 py-1 font-medium text-brand-700">
               {categoryLabel(article.category)}
+            </span>
+          )}
+          {article.school && (
+            <span className="rounded-full bg-violet-50 px-3 py-1 font-medium text-violet-700">
+              {schoolLabel(article.school)}
             </span>
           )}
           <span className="rounded-full bg-brand-50 px-3 py-1 font-medium text-brand-700">

@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { translateMode, translateText } from "./translate";
 import { extractEnglishKeywords } from "./keywords";
+import { classifySchool, normalizeSchool, SCHOOLS } from "./schools";
 
 type SummarizeInput = {
   title: string;
@@ -14,6 +15,7 @@ export type SummarizeResult = {
   titleZh: string;
   summaryZh: string;
   keywords: string;
+  school: string;
   confidence: number;
 };
 
@@ -29,6 +31,10 @@ function extractJson(text: string): Record<string, unknown> {
     throw new Error("no JSON in AI response");
   }
   return JSON.parse(cleaned.slice(start, end + 1));
+}
+
+function schoolList(): string {
+  return SCHOOLS.map((s) => `${s.slug}（${s.label}）`).join("；");
 }
 
 // Extract 1-5 keywords. Translates them via the active provider when possible,
@@ -57,7 +63,13 @@ export async function summarizeArticle(input: SummarizeInput): Promise<Summarize
 
   // Chinese sources: titles/excerpts are already Chinese.
   if (lang === "zh") {
-    return { titleZh: input.title, summaryZh: input.summary, keywords: "", confidence: 0.95 };
+    return {
+      titleZh: input.title,
+      summaryZh: input.summary,
+      keywords: "",
+      school: classifySchool(input.title, input.summary, input.content),
+      confidence: 0.95,
+    };
   }
 
   // 1) Translation provider (Youdao or free MyMemory) for title + excerpt.
@@ -69,6 +81,7 @@ export async function summarizeArticle(input: SummarizeInput): Promise<Summarize
       titleZh: titleT.ok ? titleT.text : input.title,
       summaryZh: summaryT.ok ? summaryT.text : input.summary,
       keywords,
+      school: classifySchool(input.title, input.summary, input.content),
       confidence: titleT.ok && summaryT.ok ? 0.85 : 0,
     };
   }
@@ -76,14 +89,20 @@ export async function summarizeArticle(input: SummarizeInput): Promise<Summarize
   // 2) OpenAI translation + summary + keywords.
   if (!aiEnabled()) {
     const keywords = await buildKeywords(input);
-    return { titleZh: input.title, summaryZh: input.summary, keywords, confidence: 0 };
+    return {
+      titleZh: input.title,
+      summaryZh: input.summary,
+      keywords,
+      school: classifySchool(input.title, input.summary, input.content),
+      confidence: 0,
+    };
   }
 
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const model = process.env.OPENAI_MODEL || "gpt-4o-mini";
 
   const system =
-    '你是资深心理健康行业编辑。将英文标题翻译成准确、简洁的中文标题，用 100–160 字中文提炼文章核心要点，并提炼 1–5 个中文关键词（用英文逗号分隔）。只输出 JSON，格式为 {"titleZh":"...","summaryZh":"...","keywords":"关键词1, 关键词2"}。';
+    `你是资深心理健康行业编辑。将英文标题翻译成准确、简洁的中文标题，用 100–160 字中文提炼文章核心要点，并提炼 1–5 个中文关键词（用英文逗号分隔）。最后判断文章最相关的咨询流派（school），只能从以下选择一个，若无关可留空：${schoolList()}。只输出 JSON，格式为 {"titleZh":"...","summaryZh":"...","keywords":"关键词1, 关键词2","school":"slug"}。`;
   const user = [
     `标题：${input.title}`,
     `作者/来源：${input.author || "未知"}`,
@@ -104,15 +123,23 @@ export async function summarizeArticle(input: SummarizeInput): Promise<Summarize
     const text = completion.choices[0]?.message?.content ?? "{}";
     const parsed = extractJson(text);
     const keywords = String(parsed.keywords || "").trim();
+    const school = normalizeSchool(parsed.school) || classifySchool(input.title, input.summary, input.content);
     return {
       titleZh: String(parsed.titleZh || input.title).trim(),
       summaryZh: String(parsed.summaryZh || input.summary).trim(),
       keywords: keywords || (await buildKeywords(input)),
+      school,
       confidence: 0.9,
     };
   } catch (err) {
     console.error("AI summarize failed:", (err as Error).message);
     const keywords = await buildKeywords(input);
-    return { titleZh: input.title, summaryZh: input.summary, keywords, confidence: 0 };
+    return {
+      titleZh: input.title,
+      summaryZh: input.summary,
+      keywords,
+      school: classifySchool(input.title, input.summary, input.content),
+      confidence: 0,
+    };
   }
 }

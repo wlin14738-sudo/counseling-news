@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORIES } from "@/lib/categories";
+import { SCHOOLS } from "@/lib/schools";
 
 type Props = {
   article: {
@@ -13,6 +14,7 @@ type Props = {
     summaryZh: string;
     author: string;
     category: string;
+    school: string;
     keywords: string;
     status: string;
   };
@@ -27,6 +29,7 @@ export default function EditArticle({ article }: Props) {
     summaryZh: article.summaryZh,
     author: article.author,
     category: article.category,
+    school: article.school,
     keywords: article.keywords,
   });
   const [loading, setLoading] = useState(false);
@@ -118,6 +121,21 @@ export default function EditArticle({ article }: Props) {
           {CATEGORIES.map((c) => (
             <option key={c.slug} value={c.slug}>
               {c.label}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="label">流派</label>
+        <select
+          className="input"
+          value={form.school}
+          onChange={(e) => update("school", e.target.value)}
+        >
+          <option value="">未分类</option>
+          {SCHOOLS.map((s) => (
+            <option key={s.slug} value={s.slug}>
+              {s.label}
             </option>
           ))}
         </select>

@@ -4,6 +4,7 @@ import ArticleCard from "@/components/ArticleCard";
 import SubscribeForm from "@/components/SubscribeForm";
 import { Prisma } from "@prisma/client";
 import { CATEGORIES, categoryLabel, isValidCategory } from "@/lib/categories";
+import { SCHOOLS, schoolLabel, isValidSchool } from "@/lib/schools";
 
 export const dynamic = "force-dynamic";
 
@@ -21,11 +22,13 @@ export default async function HomePage({
   const q = (sp.q as string) || "";
   const sourceId = sp.source ? Number(sp.source) : undefined;
   const category = (sp.category as string) || "";
+  const school = (sp.school as string) || "";
 
   const where: Prisma.ArticleWhereInput = {
     status: "published",
     ...(sourceId && Number.isFinite(sourceId) ? { sourceId } : {}),
     ...(category && isValidCategory(category) ? { category } : {}),
+    ...(school && isValidSchool(school) ? { school } : {}),
     ...(q
       ? {
           OR: [
@@ -61,6 +64,7 @@ export default async function HomePage({
     if (q) params.set("q", q);
     if (sourceId) params.set("source", String(sourceId));
     if (category) params.set("category", category);
+    if (school) params.set("school", school);
     if (p > 1) params.set("page", String(p));
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
@@ -71,6 +75,17 @@ export default async function HomePage({
     if (q) params.set("q", q);
     if (sourceId) params.set("source", String(sourceId));
     if (cat) params.set("category", cat);
+    if (school) params.set("school", school);
+    const qs = params.toString();
+    return qs ? `/?${qs}` : "/";
+  }
+
+  function schoolHref(s: string) {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (sourceId) params.set("source", String(sourceId));
+    if (category) params.set("category", category);
+    if (s) params.set("school", s);
     const qs = params.toString();
     return qs ? `/?${qs}` : "/";
   }
@@ -114,6 +129,32 @@ export default async function HomePage({
             ))}
           </nav>
 
+          <nav className="flex flex-wrap gap-2">
+            <Link
+              href={schoolHref("")}
+              className={`rounded-full px-4 py-1.5 text-sm ${
+                school === ""
+                  ? "bg-violet-600 text-white"
+                  : "bg-white text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              全部流派
+            </Link>
+            {SCHOOLS.map((s) => (
+              <Link
+                key={s.slug}
+                href={schoolHref(s.slug)}
+                className={`rounded-full px-4 py-1.5 text-sm ${
+                  school === s.slug
+                    ? "bg-violet-600 text-white"
+                    : "bg-white text-slate-600 hover:bg-slate-100"
+                }`}
+              >
+                {s.label}
+              </Link>
+            ))}
+          </nav>
+
           <form method="get" className="flex flex-wrap items-center gap-2">
             <input
               type="text"
@@ -151,6 +192,7 @@ export default async function HomePage({
                 sourceName={a.source.name}
                 sourceNameZh={a.source.nameZh}
                 category={categoryLabel(a.category)}
+                school={schoolLabel(a.school)}
                 keywords={a.keywords}
               />
             ))}

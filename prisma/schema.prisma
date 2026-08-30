@@ -19,6 +19,7 @@ model Source {
   enabled       Boolean   @default(true)
   dailyLimit    Int       @default(10)
   defaultCategory String  @default("industry")
+  defaultSchool String    @default("")
   lastFetchedAt DateTime?
   articles      Article[]
   createdAt     DateTime  @default(now())
@@ -40,6 +41,7 @@ model Article {
   contentZh   String   @default("")
   author      String   @default("")
   category    String   @default("")
+  school      String   @default("")
   keywords    String   @default("")
   publishedAt DateTime @default(now())
   fetchedAt   DateTime @default(now())
@@ -53,6 +55,30 @@ model Article {
   @@index([status])
   @@index([publishedAt])
   @@index([sourceId])
+}
+
+model Topic {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  titleZh     String   @default("")
+  summary     String   @default("")
+  summaryZh   String   @default("")
+  // Markdown 正文（英文原文 / 中文）
+  body        String   @default("")
+  bodyZh      String   @default("")
+  category    String   @default("school")
+  school      String   @default("")
+  // "draft" | "published"
+  status      String   @default("draft")
+  publishedAt DateTime @default(now())
+  readCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([category])
+  @@index([school])
 }
 
 model Subscriber {

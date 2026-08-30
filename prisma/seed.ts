@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { SOURCES } from "../src/lib/sources";
+import { CBT_TOPIC } from "../src/lib/cbtTopic";
 
 const prisma = new PrismaClient();
 
@@ -16,6 +17,7 @@ async function main() {
         enabled: true,
         dailyLimit: source.dailyLimit,
         defaultCategory: source.defaultCategory,
+        defaultSchool: source.defaultSchool || "",
       },
       create: { ...source, enabled: true },
     });
@@ -29,6 +31,34 @@ async function main() {
     where: { email },
     update: { passwordHash },
     create: { email, passwordHash, name: "管理员", role: "admin" },
+  });
+
+  // Seed the CBT systematic overview (published, idempotent by unique slug).
+  await prisma.topic.upsert({
+    where: { slug: CBT_TOPIC.slug },
+    update: {
+      title: CBT_TOPIC.title,
+      titleZh: CBT_TOPIC.titleZh,
+      summary: CBT_TOPIC.summary,
+      summaryZh: CBT_TOPIC.summaryZh,
+      body: CBT_TOPIC.body,
+      bodyZh: CBT_TOPIC.bodyZh,
+      category: CBT_TOPIC.category,
+      school: CBT_TOPIC.school,
+      status: CBT_TOPIC.status,
+    },
+    create: {
+      slug: CBT_TOPIC.slug,
+      title: CBT_TOPIC.title,
+      titleZh: CBT_TOPIC.titleZh,
+      summary: CBT_TOPIC.summary,
+      summaryZh: CBT_TOPIC.summaryZh,
+      body: CBT_TOPIC.body,
+      bodyZh: CBT_TOPIC.bodyZh,
+      category: CBT_TOPIC.category,
+      school: CBT_TOPIC.school,
+      status: CBT_TOPIC.status,
+    },
   });
 
   // Seed a couple of demo drafts so the review queue is not empty on first run.

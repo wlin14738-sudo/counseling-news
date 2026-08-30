@@ -33,6 +33,8 @@ pnpm dev
 - `openai`：需 `OPENAI_API_KEY`，可同时做中文摘要提炼。
 - 留空：自动——有有道 Key 用有道，否则有 OpenAI Key 用 OpenAI，否则保留原文。
 
+`TRANSLATE_ON_FETCH=false` 时，抓取会**跳过翻译**（快速入库，先显示英文）；之后可用「后台工具 → 重译队列」分批补中文。
+
 ## 上线部署（Vercel + PostgreSQL）
 
 ### 1. 建一个免费 PostgreSQL
@@ -69,7 +71,22 @@ pnpm dev
 
 ## 数据模型
 
-- **Source**：资讯源（RSS、语言、是否启用、每日额度、默认板块、最近抓取时间）
-- **Article**：文章（原文唯一 URL、英文标题/摘要、中文标题/摘要、板块、关键词、状态、AI 置信度）
+- **Source**：资讯源（RSS、语言、是否启用、每日额度、默认板块、默认流派、最近抓取时间）
+- **Article**：文章（原文唯一 URL、英文标题/摘要、中文标题/摘要、板块、流派、关键词、状态、AI 置信度）
+- **Topic**：知识库专题（唯一 slug、中英双语标题/摘要/Markdown 正文、分类、所属流派、状态、阅读数）
 - **Subscriber**：订阅者（邮箱唯一、验证 token、是否确认）
 - **Admin**：后台管理员（邮箱、密码哈希）
+
+## 专题 · 知识库
+
+前端 `/topics` 为知识库首页，`/topics/[slug]` 为专题详情页，展示中英双语长文（Markdown）。专题分若干分类（流派梳理 / 伦理 / 督导 / 职业发展 / 其他），首期发布「认知行为疗法（CBT）系统梳理」，可在后台「专题管理」中新建、编辑、发布与删除。涉及流派的专题可在详情页跳转到该流派的最新资讯（`/?school=slug`）。正文用 `react-markdown` + `remark-gfm` 渲染，并用 `@tailwindcss/typography` 排版。
+
+## 咨询流派跟踪
+
+站点会在抓取/翻译时给每篇文章打上最相关的**咨询流派**（`school`），并支持按流派在前台筛选、在后台审核与邮件日报中展示。可在 `src/lib/schools.ts` 维护流派清单；未配置 OpenAI 时按中英关键词离线分类，配置了 `OPENAI_API_KEY` 时由模型判断。
+
+当前内置流派：认知行为疗法（CBT）、精神动力学/精神分析、人本主义/存在主义、家庭与系统治疗、接纳承诺疗法（ACT）、辩证行为疗法（DBT）、正念疗法、眼动脱敏再加工（EMDR）。
+
+`src/lib/sources.ts` 预置了几个流派专属来源（ABCT、APsA、Behavioral Tech、DBT-UK、Learning ACT、Mindful），也可在后台"来源管理"里为任意来源设置**默认流派**。
+
+> 本改动向 `Source` 和 `Article` 各新增一列（均带默认值，不丢数据）。本地执行 `pnpm db:push`；Vercel 部署的构建会自动 `prisma db push` 应用。

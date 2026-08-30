@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CATEGORIES } from "@/lib/categories";
+import { SCHOOLS } from "@/lib/schools";
 
 type Props = {
   source: {
@@ -11,6 +12,7 @@ type Props = {
     nameZh: string;
     dailyLimit: number;
     defaultCategory: string;
+    defaultSchool: string;
     enabled: boolean;
   };
 };
@@ -19,6 +21,7 @@ export default function SourceRow({ source }: Props) {
   const router = useRouter();
   const [dailyLimit, setDailyLimit] = useState(source.dailyLimit);
   const [defaultCategory, setDefaultCategory] = useState(source.defaultCategory);
+  const [defaultSchool, setDefaultSchool] = useState(source.defaultSchool);
   const [enabled, setEnabled] = useState(source.enabled);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
@@ -34,6 +37,7 @@ export default function SourceRow({ source }: Props) {
           id: source.id,
           dailyLimit,
           defaultCategory,
+          defaultSchool,
           enabled,
         }),
       });
@@ -76,6 +80,21 @@ export default function SourceRow({ source }: Props) {
             {CATEGORIES.map((c) => (
               <option key={c.slug} value={c.slug}>
                 {c.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col text-sm text-slate-600">
+          默认流派
+          <select
+            value={defaultSchool}
+            onChange={(e) => setDefaultSchool(e.target.value)}
+            className="input mt-1 w-44"
+          >
+            <option value="">未分类</option>
+            {SCHOOLS.map((s) => (
+              <option key={s.slug} value={s.slug}>
+                {s.label}
               </option>
             ))}
           </select>

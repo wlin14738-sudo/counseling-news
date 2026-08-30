@@ -37,6 +37,7 @@ export async function POST(req: Request) {
           titleZh: ai.titleZh,
           summaryZh: ai.summaryZh,
           keywords: ai.keywords,
+          school: ai.school || a.school || "",
           aiConfidence: ai.confidence,
         },
       });

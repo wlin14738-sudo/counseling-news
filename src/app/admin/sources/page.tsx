@@ -34,6 +34,7 @@ export default async function AdminSourcesPage() {
               nameZh: s.nameZh,
               dailyLimit: s.dailyLimit,
               defaultCategory: s.defaultCategory,
+              defaultSchool: s.defaultSchool,
               enabled: s.enabled,
             }}
           />
