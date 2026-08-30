@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: counseling-news
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm prisma generate && pnpm build
+    startCommand: sh -c "pnpm exec next start -p $PORT"
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: CRON_SECRET
+        generateValue: true
+      - key: TRANSLATOR
+        value: mymemory
+      - key: DATABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: SEED_ADMIN_EMAIL
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false

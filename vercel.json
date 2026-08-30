@@ -1,0 +1,14 @@
+{
+  "buildCommand": "prisma db push && prisma generate && next build",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/fetch",
+      "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/digest",
+      "schedule": "0 1 * * *"
+    }
+  ]
+}
