@@ -25,6 +25,7 @@ RUN pnpm build
 FROM node:20-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+ENV PORT=8080
 
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssl ca-certificates \
@@ -39,6 +40,7 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/next.config.mjs ./
 RUN mkdir -p public
 
-EXPOSE 3000
-# Zeabur injects $PORT; bind to 0.0.0.0 so the health check can reach it
-CMD ["sh", "-c", "pnpm exec next start -p ${PORT:-3000} -H 0.0.0.0"]
+EXPOSE 8080
+# Zeabur injects PORT and HOST; bind to 0.0.0.0 so the health check can reach it.
+# Use the local next binary so we never depend on a global pnpm at runtime.
+CMD ["sh", "-c", "exec node_modules/.bin/next start -p ${PORT:-8080} -H 0.0.0.0"]
