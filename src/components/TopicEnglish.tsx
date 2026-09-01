@@ -10,6 +10,8 @@ type Props = {
   body: string;
   timeline?: TimelineEntry[];
   figures?: FigureEntry[];
+  timelineChina?: TimelineEntry[];
+  figuresChina?: FigureEntry[];
 };
 
 export default function TopicEnglish({
@@ -18,6 +20,8 @@ export default function TopicEnglish({
   body,
   timeline,
   figures,
+  timelineChina,
+  figuresChina,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -34,7 +38,14 @@ export default function TopicEnglish({
         <div className="mt-4 space-y-3">
           <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
           {summary && <p className="text-sm text-slate-600">{summary}</p>}
-          <TopicBody body={body} timeline={timeline} figures={figures} lang="en" />
+          <TopicBody
+            body={body}
+            timeline={timeline}
+            figures={figures}
+            timelineChina={timelineChina}
+            figuresChina={figuresChina}
+            lang="en"
+          />
         </div>
       )}
     </div>

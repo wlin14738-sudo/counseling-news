@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { SOURCES } from "../src/lib/sources";
 import { CBT_TOPIC } from "../src/lib/cbtTopic";
+import { PSYCHODYNAMIC_TOPIC } from "../src/lib/psychodynamicTopic";
 
 const prisma = new PrismaClient();
 
@@ -45,6 +46,10 @@ async function main() {
       bodyZh: CBT_TOPIC.bodyZh,
       timeline: CBT_TOPIC.timeline,
       figures: CBT_TOPIC.figures,
+      timelineChina: CBT_TOPIC.timelineChina,
+      figuresChina: CBT_TOPIC.figuresChina,
+      fitClient: CBT_TOPIC.fitClient,
+      fitPractitioner: CBT_TOPIC.fitPractitioner,
       category: CBT_TOPIC.category,
       school: CBT_TOPIC.school,
       status: CBT_TOPIC.status,
@@ -59,9 +64,53 @@ async function main() {
       bodyZh: CBT_TOPIC.bodyZh,
       timeline: CBT_TOPIC.timeline,
       figures: CBT_TOPIC.figures,
+      timelineChina: CBT_TOPIC.timelineChina,
+      figuresChina: CBT_TOPIC.figuresChina,
+      fitClient: CBT_TOPIC.fitClient,
+      fitPractitioner: CBT_TOPIC.fitPractitioner,
       category: CBT_TOPIC.category,
       school: CBT_TOPIC.school,
       status: CBT_TOPIC.status,
+    },
+  });
+
+  // Seed the psychodynamic systematic overview (published, idempotent by slug).
+  await prisma.topic.upsert({
+    where: { slug: PSYCHODYNAMIC_TOPIC.slug },
+    update: {
+      title: PSYCHODYNAMIC_TOPIC.title,
+      titleZh: PSYCHODYNAMIC_TOPIC.titleZh,
+      summary: PSYCHODYNAMIC_TOPIC.summary,
+      summaryZh: PSYCHODYNAMIC_TOPIC.summaryZh,
+      body: PSYCHODYNAMIC_TOPIC.body,
+      bodyZh: PSYCHODYNAMIC_TOPIC.bodyZh,
+      timeline: PSYCHODYNAMIC_TOPIC.timeline,
+      figures: PSYCHODYNAMIC_TOPIC.figures,
+      timelineChina: PSYCHODYNAMIC_TOPIC.timelineChina,
+      figuresChina: PSYCHODYNAMIC_TOPIC.figuresChina,
+      fitClient: PSYCHODYNAMIC_TOPIC.fitClient,
+      fitPractitioner: PSYCHODYNAMIC_TOPIC.fitPractitioner,
+      category: PSYCHODYNAMIC_TOPIC.category,
+      school: PSYCHODYNAMIC_TOPIC.school,
+      status: PSYCHODYNAMIC_TOPIC.status,
+    },
+    create: {
+      slug: PSYCHODYNAMIC_TOPIC.slug,
+      title: PSYCHODYNAMIC_TOPIC.title,
+      titleZh: PSYCHODYNAMIC_TOPIC.titleZh,
+      summary: PSYCHODYNAMIC_TOPIC.summary,
+      summaryZh: PSYCHODYNAMIC_TOPIC.summaryZh,
+      body: PSYCHODYNAMIC_TOPIC.body,
+      bodyZh: PSYCHODYNAMIC_TOPIC.bodyZh,
+      timeline: PSYCHODYNAMIC_TOPIC.timeline,
+      figures: PSYCHODYNAMIC_TOPIC.figures,
+      timelineChina: PSYCHODYNAMIC_TOPIC.timelineChina,
+      figuresChina: PSYCHODYNAMIC_TOPIC.figuresChina,
+      fitClient: PSYCHODYNAMIC_TOPIC.fitClient,
+      fitPractitioner: PSYCHODYNAMIC_TOPIC.fitPractitioner,
+      category: PSYCHODYNAMIC_TOPIC.category,
+      school: PSYCHODYNAMIC_TOPIC.school,
+      status: PSYCHODYNAMIC_TOPIC.status,
     },
   });
 

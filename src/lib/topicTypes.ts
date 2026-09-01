@@ -15,3 +15,8 @@ export type FigureEntry = {
   bioZh: string;
   bioEn: string;
 };
+
+export type FitBlock = {
+  zh?: string;
+  en?: string;
+};

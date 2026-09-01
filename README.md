@@ -73,13 +73,15 @@ pnpm dev
 
 - **Source**：资讯源（RSS、语言、是否启用、每日额度、默认板块、默认流派、最近抓取时间）
 - **Article**：文章（原文唯一 URL、英文标题/摘要、中文标题/摘要、板块、流派、关键词、状态、AI 置信度）
-- **Topic**：知识库专题（唯一 slug、中英双语标题/摘要/Markdown 正文、分类、所属流派、状态、阅读数）
+- **Topic**：知识库专题（唯一 slug、中英双语标题/摘要/Markdown 正文、时间轴、核心人物、分类、所属流派、状态、阅读数）
 - **Subscriber**：订阅者（邮箱唯一、验证 token、是否确认）
 - **Admin**：后台管理员（邮箱、密码哈希）
 
 ## 专题 · 知识库
 
-前端 `/topics` 为知识库首页，`/topics/[slug]` 为专题详情页，展示中英双语长文（Markdown）。专题分若干分类（流派梳理 / 伦理 / 督导 / 职业发展 / 其他），首期发布「认知行为疗法（CBT）系统梳理」，可在后台「专题管理」中新建、编辑、发布与删除。涉及流派的专题可在详情页跳转到该流派的最新资讯（`/?school=slug`）。正文用 `react-markdown` + `remark-gfm` 渲染，并用 `@tailwindcss/typography` 排版。
+前端 `/topics` 为知识库首页，`/topics/[slug]` 为专题详情页，展示中英双语长文（Markdown）。专题分若干分类（流派梳理 / 伦理 / 督导 / 职业发展 / 其他），首期发布「认知行为疗法（CBT）系统梳理」，可在后台「专题管理」中新建、编辑、发布与删除。涉及流派的专题可在详情页跳转到该流派的最新资讯（`/?school=slug`）。
+
+详情页有 Hero 头部、章节目录（锚点跳转）、阅读时长，并在正文中通过 `%%TIMELINE%%` / `%%FIGURES%%` 占位符渲染结构化**时间轴**与**核心人物卡片**（由 `Topic.timeline` / `Topic.figures` 两个 JSON 字段驱动，后台可增删排序）。正文用 `react-markdown` + `remark-gfm` 渲染，并用 `@tailwindcss/typography` 排版；标题锚点与目录由项目内统一的 slugify 生成，不额外引入 markdown-wiki 依赖。
 
 ## 咨询流派跟踪
 

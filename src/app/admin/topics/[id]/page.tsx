@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/session";
-import type { FigureEntry, TimelineEntry } from "@/lib/topicTypes";
+import type { FigureEntry, FitBlock, TimelineEntry } from "@/lib/topicTypes";
 import EditTopic from "@/components/EditTopic";
 import DeleteTopicButton from "@/components/DeleteTopicButton";
 
@@ -45,6 +45,10 @@ export default async function AdminEditTopicPage({
           bodyZh: topic.bodyZh,
           timeline: (topic.timeline as TimelineEntry[]) || [],
           figures: (topic.figures as FigureEntry[]) || [],
+          timelineChina: (topic.timelineChina as TimelineEntry[]) || [],
+          figuresChina: (topic.figuresChina as FigureEntry[]) || [],
+          fitClient: (topic.fitClient as FitBlock) || {},
+          fitPractitioner: (topic.fitPractitioner as FitBlock) || {},
           category: topic.category,
           school: topic.school,
           status: topic.status,

@@ -70,6 +70,12 @@ model Topic {
   // 结构化时间轴与核心人物，JSON 数组
   timeline    Json     @default("[]")
   figures     Json     @default("[]")
+  // 中国部分的结构化时间轴与核心人物（独立于西方部分）
+  timelineChina Json   @default("[]")
+  figuresChina  Json   @default("[]")
+  // 适配判断板块（来访者 / 咨询师），JSON：{ zh: "...", en: "..." }
+  fitClient       Json @default("{}")
+  fitPractitioner Json @default("{}")
   category    String   @default("school")
   school      String   @default("")
   // "draft" | "published"

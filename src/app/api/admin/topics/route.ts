@@ -54,6 +54,42 @@ const fields = {
       }),
     )
     .optional(),
+  timelineChina: z
+    .array(
+      z.object({
+        year: z.string().default(""),
+        titleZh: z.string().default(""),
+        titleEn: z.string().default(""),
+        bodyZh: z.string().default(""),
+        bodyEn: z.string().default(""),
+      }),
+    )
+    .optional(),
+  figuresChina: z
+    .array(
+      z.object({
+        nameZh: z.string().default(""),
+        nameEn: z.string().default(""),
+        years: z.string().default(""),
+        titleZh: z.string().default(""),
+        titleEn: z.string().default(""),
+        bioZh: z.string().default(""),
+        bioEn: z.string().default(""),
+      }),
+    )
+    .optional(),
+  fitClient: z
+    .object({
+      zh: z.string().optional(),
+      en: z.string().optional(),
+    })
+    .optional(),
+  fitPractitioner: z
+    .object({
+      zh: z.string().optional(),
+      en: z.string().optional(),
+    })
+    .optional(),
   category: z.string().optional(),
   school: z.string().optional(),
   status: z.enum(["draft", "published"]).optional(),
@@ -109,6 +145,10 @@ export async function POST(req: Request) {
       bodyZh: data.bodyZh || "",
       timeline: data.timeline || [],
       figures: data.figures || [],
+      timelineChina: data.timelineChina || [],
+      figuresChina: data.figuresChina || [],
+      fitClient: data.fitClient || {},
+      fitPractitioner: data.fitPractitioner || {},
       category: data.category || "school",
       school: data.school || "",
       status: data.status || "draft",

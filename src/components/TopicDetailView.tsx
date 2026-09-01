@@ -5,8 +5,9 @@ import { formatDate } from "@/lib/utils";
 import { schoolLabel, schoolEn } from "@/lib/schools";
 import { topicLabel, topicCategory } from "@/lib/topics";
 import { extractHeadings, readingMinutes } from "@/lib/text";
-import type { FigureEntry, TimelineEntry } from "@/lib/topicTypes";
+import type { FigureEntry, FitBlock, TimelineEntry } from "@/lib/topicTypes";
 import TopicBody from "@/components/TopicBody";
+import FitPanel from "@/components/FitPanel";
 import { localizeHref, type Locale } from "@/lib/i18n";
 import { absUrl } from "@/lib/site";
 
@@ -29,6 +30,8 @@ export default async function TopicDetailView({
   const figures = (topic.figures as FigureEntry[]) || [];
   const timelineChina = (topic.timelineChina as TimelineEntry[]) || [];
   const figuresChina = (topic.figuresChina as FigureEntry[]) || [];
+  const fitClient = (topic.fitClient as FitBlock) || null;
+  const fitPractitioner = (topic.fitPractitioner as FitBlock) || null;
   const body = zh ? topic.bodyZh || topic.body : topic.body || topic.bodyZh;
   const mainTitle = zh ? topic.titleZh || topic.title : topic.title || topic.titleZh;
   const mainSummary = zh ? topic.summaryZh || topic.summary : topic.summary || topic.summaryZh;
@@ -100,6 +103,8 @@ export default async function TopicDetailView({
         <h1 className="text-3xl font-bold text-slate-900">{mainTitle}</h1>
         <p className="mt-3 max-w-2xl text-slate-600">{mainSummary}</p>
       </section>
+
+      <FitPanel client={fitClient} practitioner={fitPractitioner} lang={lang} />
 
       <details className="card p-4 lg:hidden">
         <summary className="cursor-pointer text-sm font-medium text-slate-700">
