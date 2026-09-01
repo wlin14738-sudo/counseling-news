@@ -23,10 +23,10 @@ export type TopicSeed = {
 // 正文用 %%TIMELINE%% / %%FIGURES%% 占位符标记时间轴与人物的插入位置。
 export const CBT_TOPIC: TopicSeed = {
   slug: `cbt`,
-  title: `Cognitive Behavioral Therapy (CBT): A Systematic Overview`,
-  titleZh: `认知行为疗法（CBT）系统梳理`,
+  title: `Cognitive Behavioral Therapy (CBT)`,
+  titleZh: `认知行为疗法（CBT）`,
   summary: `A structured, bilingual overview of CBT covering its historical waves, key figures, cognitive and behavioral mechanisms, techniques, evidence base, applications across populations, China's training pathways, and further resources.`,
-  summaryZh: `一套结构化、双语版的 CBT 系统梳理，涵盖历史波次、核心人物、认知与行为机制、主要技术、循证证据、不同人群应用、中国培训认证体系与更多资源。`,
+  summaryZh: `一套结构化、双语版的 CBT 内容，涵盖历史波次、核心人物、认知与行为机制、主要技术、循证证据、不同人群应用、中国培训认证体系与更多资源。`,
   timeline: [
     {
       year: `1900s–1920s`,
@@ -99,7 +99,7 @@ export const CBT_TOPIC: TopicSeed = {
       bodyEn: `Transdiagnostic protocols, culturally adapted formats, and AI-assisted text or internet CBT are current frontiers.`,
     },
   ],
-  body: `# Cognitive Behavioral Therapy (CBT): A Systematic Overview
+  body: `# Cognitive Behavioral Therapy (CBT)
 
 ## Part 1: The Western (International) Tradition
 
@@ -335,9 +335,9 @@ Western CBT emphasizes individualism and "challenging beliefs." In China, practi
 > In one sentence: CBT is a brief, structured therapy that fuses the empirical line of "how cognition shapes emotion" with the line of "how behavior maintains problems"; it has among the strongest evidence in psychotherapy and targets depression, anxiety, OCD, and insomnia. China has built a national professional system since the 1988 Sino-German workshop, with four CBT organizations, a three-stage training ladder (basic → system → disorder-specific), and a growing local evidence base (the 2025 guideline's 1A recommendation and localized CCBT). For an adolescent-focused practitioner, the disorder-specific classes (especially depression, anxiety, and insomnia) and the parent-involved child-adolescent modules are the highest-value entry points.
 
 > Disclaimer: This overview is educational and does not replace professional training or individualized clinical judgment.`,
-  bodyZh: `# 认知行为疗法（CBT）系统梳理
+  bodyZh: `# 认知行为疗法（CBT）
 
-## 第一部分：西方（国际）认知行为疗法系统梳理
+## 第一部分：西方（国际）认知行为疗法
 
 ## 一、历史脉络与起源
 

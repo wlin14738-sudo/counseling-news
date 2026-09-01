@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { formatDate } from "@/lib/utils";
 import { schoolLabel, schoolEn } from "@/lib/schools";
 import { TOPIC_CATEGORIES, topicLabel, topicCategory } from "@/lib/topics";
 import { localizeHref, type Locale } from "@/lib/i18n";
@@ -29,18 +28,17 @@ export default async function TopicListView({ lang }: { lang: Locale }) {
 
   const t = lang === "zh" ? {
     title: "专题 · 知识库",
-    desc: "面向从业者的系统梳理：流派脉络、核心方法、循证证据与职业路径。首期聚焦各咨询流派的深度内容，后续扩展伦理、督导与职业发展等专题。",
+    desc: "面向从业者的深度内容：流派脉络、核心方法、循证证据与职业路径。首期聚焦各咨询流派，后续扩展伦理、督导与职业发展等专题。",
     empty: "暂无知识库内容。",
   } : {
     title: "Topics · Knowledge Base",
-    desc: "Systematic reviews for practitioners: the evolution of therapy schools, core methods, evidence, and career paths. Our first batch focuses on in-depth content for each counseling school, with ethics, supervision, and career development to follow.",
+    desc: "In-depth content for practitioners: the evolution of therapy schools, core methods, evidence, and career paths. Our first batch focuses on each counseling school, with ethics, supervision, and career development to follow.",
     empty: "No knowledge base content yet.",
   };
 
   const catLabel = (slug: string) => lang === "zh" ? topicLabel(slug) : topicCategory(slug).en;
   const schLabel = (slug: string) => lang === "zh" ? schoolLabel(slug) : schoolEn(slug);
   const titleOf = (titleZh: string, title: string) => lang === "zh" ? titleZh || title : title || titleZh;
-  const sumOf = (summaryZh: string, summary: string) => lang === "zh" ? summaryZh || summary : summary || summaryZh;
 
   return (
     <div className="container-page space-y-10">
@@ -72,14 +70,10 @@ export default async function TopicListView({ lang }: { lang: Locale }) {
                         {schLabel(item.school)}
                       </span>
                     )}
-                    <span>{formatDate(item.publishedAt)}</span>
                   </div>
                   <h3 className="text-lg font-semibold text-slate-900 group-hover:text-brand-600">
                     {titleOf(item.titleZh, item.title)}
                   </h3>
-                  <p className="text-sm leading-relaxed text-slate-600">
-                    {sumOf(item.summaryZh, item.summary)}
-                  </p>
                 </Link>
               );
             })}

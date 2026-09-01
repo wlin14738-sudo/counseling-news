@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { formatDate } from "@/lib/utils";
 import { schoolLabel, schoolEn } from "@/lib/schools";
 import { topicLabel, topicCategory } from "@/lib/topics";
 import { extractHeadings, readingMinutes } from "@/lib/text";
@@ -91,7 +90,6 @@ export default async function TopicDetailView({
               {schLabel}
             </span>
           )}
-          <span>{formatDate(topic.publishedAt)}</span>
           <span>
             {topic.readCount + 1} {zh ? "次阅读" : "reads"}
           </span>
@@ -101,7 +99,6 @@ export default async function TopicDetailView({
           </span>
         </div>
         <h1 className="text-3xl font-bold text-slate-900">{mainTitle}</h1>
-        <p className="mt-3 max-w-2xl text-slate-600">{mainSummary}</p>
       </section>
 
       <FitPanel client={fitClient} practitioner={fitPractitioner} lang={lang} />

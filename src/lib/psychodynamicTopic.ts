@@ -24,10 +24,10 @@ export type TopicSeed = {
 // 渲染结构化时间轴与人物卡，第二部分（中国发展）以 Markdown 表格呈现。
 export const PSYCHODYNAMIC_TOPIC: TopicSeed = {
   slug: `psychodynamic`,
-  title: `Psychodynamic & Psychoanalytic Therapy: A Systematic Overview`,
-  titleZh: `精神动力学/精神分析疗法系统梳理`,
+  title: `Psychodynamic & Psychoanalytic Therapy`,
+  titleZh: `精神动力学/精神分析疗法`,
   summary: `A bilingual overview of psychodynamic therapy, covering the Western historical lineage and key figures, core principles, techniques, evidence, applications, and a dedicated section on its development in China.`,
-  summaryZh: `一套双语版的精神动力学系统梳理：涵盖西方历史谱系与核心人物、核心原理、技术方法、循证与应用，并单独成篇介绍其在中国的发展。`,
+  summaryZh: `一套双语版的精神动力学内容：涵盖西方历史谱系与核心人物、核心原理、技术方法、循证与应用，并单独成篇介绍其在中国的发展。`,
   timeline: [
     {
       year: `1880s–1890s`,
@@ -100,7 +100,7 @@ export const PSYCHODYNAMIC_TOPIC: TopicSeed = {
       bodyEn: `Psychodynamic therapy integrates with CBT and attachment work and explores digital, brief, and transdiagnostic applications.`,
     },
   ],
-  body: `# Psychodynamic & Psychoanalytic Therapy: A Systematic Overview
+  body: `# Psychodynamic & Psychoanalytic Therapy
 
 ## Part 1: The Western (International) Tradition
 
@@ -286,9 +286,9 @@ Local works: Zhong Youbin's Chinese Psychoanalysis; translations by Zeng Qifeng,
 > In one sentence: psychodynamic therapy has a century-long Western lineage from psychoanalysis through object relations, self psychology, attachment, and mentalization; in China it passed through Republican-era translation, the 1949–1978 interruption, localization via Zhong Youbin's cognitive insight therapy, and clinical systematization through Sino-German/Norwegian/British/American classes and CAPA — now with a CPS registration system, a psychoanalytic committee, the Mental Health Law, and Qiu Jianyin's first multicentered dynamic-depression RCT, though evidence and workforce scale still need strengthening.
 
 > Disclaimer: This overview is educational and does not replace professional training or individualized clinical judgment.`,
-  bodyZh: `# 精神动力学/精神分析疗法系统梳理
+  bodyZh: `# 精神动力学/精神分析疗法
 
-## 第一部分：西方（国际）动力治疗系统梳理
+## 第一部分：西方（国际）动力治疗
 
 ### 一、历史脉络与起源
 
