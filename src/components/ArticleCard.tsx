@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
+import { localizeHref, type Locale } from "@/lib/i18n";
 
 type Props = {
   id: number;
@@ -13,6 +14,7 @@ type Props = {
   category?: string;
   school?: string;
   keywords?: string;
+  lang?: Locale;
 };
 
 export default function ArticleCard({
@@ -27,10 +29,13 @@ export default function ArticleCard({
   category,
   school,
   keywords,
+  lang = "zh",
 }: Props) {
-  const zhTitle = titleZh || title;
-  const zhSummary = summaryZh || summary;
-  const sourceLabel = sourceNameZh || sourceName || "";
+  const mainTitle = lang === "zh" ? titleZh || title : title || titleZh;
+  const mainSummary = lang === "zh" ? summaryZh || summary : summary || summaryZh;
+  const sourceLabel =
+    lang === "zh" ? sourceNameZh || sourceName || "" : sourceName || sourceNameZh || "";
+  const href = localizeHref(lang, `/articles/${id}`);
 
   return (
     <article className="card overflow-hidden">
@@ -49,15 +54,12 @@ export default function ArticleCard({
           {sourceLabel && <span className="text-slate-600">{sourceLabel}</span>}
           <span>{formatDate(publishedAt)}</span>
         </div>
-        <Link href={`/articles/${id}`}>
+        <Link href={href}>
           <h2 className="mb-2 text-xl font-semibold text-slate-900 hover:text-brand-600">
-            {zhTitle}
+            {mainTitle}
           </h2>
         </Link>
-        {titleZh && title !== titleZh && (
-          <p className="mb-2 text-sm text-slate-400">EN: {title}</p>
-        )}
-        <p className="text-sm leading-relaxed text-slate-600">{zhSummary}</p>
+        <p className="text-sm leading-relaxed text-slate-600">{mainSummary}</p>
         {keywords && (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {keywords

@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import HomeView from "@/components/HomeView";
 import { buildMetadata } from "@/lib/seo";
+import { SITE_NAME_EN } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = buildMetadata({
-  lang: "zh",
-  title: "全球心理咨询行业资讯",
+  lang: "en",
+  title: SITE_NAME_EN,
   description:
-    "每日聚合全球及中文权威机构的最新行业动态，AI 翻译中文摘要，助从业者把握行业脉搏。",
+    "Daily aggregation of the latest counseling & mental health industry news from authoritative global and Chinese sources, with AI-generated Chinese summaries.",
   path: "/",
   type: "website",
 });
@@ -18,5 +19,5 @@ export default async function Page({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  return <HomeView lang="zh" searchParams={searchParams} />;
+  return <HomeView lang="en" searchParams={searchParams} />;
 }

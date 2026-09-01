@@ -17,9 +17,9 @@ export async function generateMetadata({
   });
   if (!article) return {};
   return buildMetadata({
-    lang: "zh",
-    title: article.titleZh || article.title,
-    description: article.summaryZh || article.summary,
+    lang: "en",
+    title: article.title || article.titleZh,
+    description: article.summary || article.summaryZh,
     path: `/articles/${id}`,
     type: "article",
   });
@@ -31,5 +31,5 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <ArticleDetailView lang="zh" id={id} />;
+  return <ArticleDetailView lang="en" id={id} />;
 }

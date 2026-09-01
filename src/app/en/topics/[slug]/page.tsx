@@ -17,9 +17,9 @@ export async function generateMetadata({
   });
   if (!topic) return {};
   return buildMetadata({
-    lang: "zh",
-    title: topic.titleZh || topic.title,
-    description: topic.summaryZh || topic.summary,
+    lang: "en",
+    title: topic.title || topic.titleZh,
+    description: topic.summary || topic.summaryZh,
     path: `/topics/${slug}`,
     type: "article",
   });
@@ -31,5 +31,5 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <TopicDetailView lang="zh" slug={slug} />;
+  return <TopicDetailView lang="en" slug={slug} />;
 }

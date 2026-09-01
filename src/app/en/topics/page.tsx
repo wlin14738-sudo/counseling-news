@@ -5,14 +5,14 @@ import { buildMetadata } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = buildMetadata({
-  lang: "zh",
-  title: "专题 · 知识库",
+  lang: "en",
+  title: "Topics · Knowledge Base",
   description:
-    "面向从业者的系统梳理：流派脉络、核心方法、循证证据与职业路径。",
+    "Systematic reviews for practitioners: the evolution of therapy schools, core methods, evidence, and career paths.",
   path: "/topics",
   type: "website",
 });
 
 export default function Page() {
-  return <TopicListView lang="zh" />;
+  return <TopicListView lang="en" />;
 }
