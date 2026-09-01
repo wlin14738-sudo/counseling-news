@@ -151,3 +151,31 @@ export async function performDigest() {
     ...result,
   };
 }
+
+// Auto-review: each run publishes up to `limit` eligible drafts that already
+// have complete publishing info (Chinese title + category + a summary).
+// Eligible ones are prioritized by AI confidence, then by fetch time.
+export async function performAutoReview(limit: number) {
+  const eligible = await prisma.article.findMany({
+    where: {
+      status: "draft",
+      titleZh: { not: "" },
+      category: { not: "" },
+      OR: [{ summaryZh: { not: "" } }, { summary: { not: "" } }],
+    },
+    orderBy: [{ aiConfidence: "desc" }, { fetchedAt: "desc" }],
+    take: limit,
+    select: { id: true },
+  });
+
+  const ids = eligible.map((a) => a.id);
+  if (ids.length === 0) {
+    return { reviewed: 0, published: 0 };
+  }
+
+  const res = await prisma.article.updateMany({
+    where: { id: { in: ids } },
+    data: { status: "published", publishedAt: new Date() },
+  });
+  return { reviewed: ids.length, published: res.count };
+}

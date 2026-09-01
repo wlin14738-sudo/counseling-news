@@ -1,4 +1,4 @@
-import { performFetch, performDigest } from "./lib/jobs";
+import { performFetch, performDigest, performAutoReview } from "./lib/jobs";
 
 let started = false;
 
@@ -34,6 +34,7 @@ function beijingNow() {
 function startScheduler() {
   let lastFetch = "";
   let lastDigest = "";
+  let lastAuto = "";
 
   setInterval(async () => {
     const t = beijingNow();
@@ -47,6 +48,15 @@ function startScheduler() {
         lastDigest = `${t.dayKey}-d`;
         console.log("[scheduler] running digest job...");
         console.log("[scheduler] digest ->", JSON.stringify(await performDigest()));
+      }
+      if (t.h === 10 && t.min === 0 && t.sec < 10 && lastAuto !== `${t.dayKey}-a`) {
+        lastAuto = `${t.dayKey}-a`;
+        const limit = Number(process.env.AUTO_DAILY_REVIEW || 20);
+        console.log("[scheduler] running auto-review job...");
+        console.log(
+          "[scheduler] auto-review ->",
+          JSON.stringify(await performAutoReview(limit)),
+        );
       }
     } catch (err) {
       console.error("[scheduler] job failed:", (err as Error).message);

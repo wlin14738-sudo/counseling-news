@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/utils";
 import LogoutButton from "@/components/LogoutButton";
 import DeleteArticleButton from "@/components/DeleteArticleButton";
 import FetchButton from "@/components/FetchButton";
+import AutoReviewButton from "@/components/AutoReviewButton";
 import DraftQueue from "@/components/DraftQueue";
 import { CATEGORIES, categoryLabel } from "@/lib/categories";
 import { SCHOOLS, schoolLabel } from "@/lib/schools";
@@ -85,6 +86,7 @@ export default async function AdminPage({
         <div className="flex items-center gap-3">
           <span className="text-sm text-slate-500">{session?.email}</span>
           <FetchButton />
+          <AutoReviewButton />
           <Link href="/admin/articles/new" className="btn-primary">
             手动添加
           </Link>
