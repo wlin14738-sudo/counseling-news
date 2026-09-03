@@ -16,7 +16,10 @@ const ROOT = resolveRoot();
 function loadCoachingBody(): string {
   try {
     const raw = readFileSync(path.join(ROOT, "心理教练技术流派总览.md"), "utf8");
-    return raw.replace(/^#\s+[^\n]*\n+/, "").trim();
+    return raw
+      .replace(/^#\s+[^\n]*\n+/, "")
+      .replace(/^## 目录\n[\s\S]*?\n---\n/m, "")
+      .trim();
   } catch {
     return "";
   }
