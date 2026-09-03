@@ -3,8 +3,53 @@ import bcrypt from "bcryptjs";
 import { SOURCES } from "../src/lib/sources";
 import { CBT_TOPIC } from "../src/lib/cbtTopic";
 import { PSYCHODYNAMIC_TOPIC } from "../src/lib/psychodynamicTopic";
+import { HUMANISTIC_TOPIC } from "../src/lib/humanisticTopic";
+import { EXISTENTIAL_TOPIC } from "../src/lib/existentialTopic";
+import type { TopicSeed } from "../src/lib/cbtTopic";
 
 const prisma = new PrismaClient();
+
+// 通用专题种子：按唯一 slug 幂等 upsert（既有/发布中的专题均可复用）。
+async function seedTopic(topic: TopicSeed) {
+  await prisma.topic.upsert({
+    where: { slug: topic.slug },
+    update: {
+      title: topic.title,
+      titleZh: topic.titleZh,
+      summary: topic.summary,
+      summaryZh: topic.summaryZh,
+      body: topic.body,
+      bodyZh: topic.bodyZh,
+      timeline: topic.timeline,
+      figures: topic.figures,
+      timelineChina: topic.timelineChina,
+      figuresChina: topic.figuresChina,
+      fitClient: topic.fitClient,
+      fitPractitioner: topic.fitPractitioner,
+      category: topic.category,
+      school: topic.school,
+      status: topic.status,
+    },
+    create: {
+      slug: topic.slug,
+      title: topic.title,
+      titleZh: topic.titleZh,
+      summary: topic.summary,
+      summaryZh: topic.summaryZh,
+      body: topic.body,
+      bodyZh: topic.bodyZh,
+      timeline: topic.timeline,
+      figures: topic.figures,
+      timelineChina: topic.timelineChina,
+      figuresChina: topic.figuresChina,
+      fitClient: topic.fitClient,
+      fitPractitioner: topic.fitPractitioner,
+      category: topic.category,
+      school: topic.school,
+      status: topic.status,
+    },
+  });
+}
 
 async function main() {
   // Seed sources (idempotent: upsert by unique rssUrl).
@@ -111,6 +156,86 @@ async function main() {
       category: PSYCHODYNAMIC_TOPIC.category,
       school: PSYCHODYNAMIC_TOPIC.school,
       status: PSYCHODYNAMIC_TOPIC.status,
+    },
+  });
+
+  // Seed the humanistic & existential overview (published, idempotent by slug).
+  await prisma.topic.upsert({
+    where: { slug: HUMANISTIC_TOPIC.slug },
+    update: {
+      title: HUMANISTIC_TOPIC.title,
+      titleZh: HUMANISTIC_TOPIC.titleZh,
+      summary: HUMANISTIC_TOPIC.summary,
+      summaryZh: HUMANISTIC_TOPIC.summaryZh,
+      body: HUMANISTIC_TOPIC.body,
+      bodyZh: HUMANISTIC_TOPIC.bodyZh,
+      timeline: HUMANISTIC_TOPIC.timeline,
+      figures: HUMANISTIC_TOPIC.figures,
+      timelineChina: HUMANISTIC_TOPIC.timelineChina,
+      figuresChina: HUMANISTIC_TOPIC.figuresChina,
+      fitClient: HUMANISTIC_TOPIC.fitClient,
+      fitPractitioner: HUMANISTIC_TOPIC.fitPractitioner,
+      category: HUMANISTIC_TOPIC.category,
+      school: HUMANISTIC_TOPIC.school,
+      status: HUMANISTIC_TOPIC.status,
+    },
+    create: {
+      slug: HUMANISTIC_TOPIC.slug,
+      title: HUMANISTIC_TOPIC.title,
+      titleZh: HUMANISTIC_TOPIC.titleZh,
+      summary: HUMANISTIC_TOPIC.summary,
+      summaryZh: HUMANISTIC_TOPIC.summaryZh,
+      body: HUMANISTIC_TOPIC.body,
+      bodyZh: HUMANISTIC_TOPIC.bodyZh,
+      timeline: HUMANISTIC_TOPIC.timeline,
+      figures: HUMANISTIC_TOPIC.figures,
+      timelineChina: HUMANISTIC_TOPIC.timelineChina,
+      figuresChina: HUMANISTIC_TOPIC.figuresChina,
+      fitClient: HUMANISTIC_TOPIC.fitClient,
+      fitPractitioner: HUMANISTIC_TOPIC.fitPractitioner,
+      category: HUMANISTIC_TOPIC.category,
+      school: HUMANISTIC_TOPIC.school,
+      status: HUMANISTIC_TOPIC.status,
+    },
+  });
+
+  // Seed the existential overview (published, idempotent by slug).
+  await prisma.topic.upsert({
+    where: { slug: EXISTENTIAL_TOPIC.slug },
+    update: {
+      title: EXISTENTIAL_TOPIC.title,
+      titleZh: EXISTENTIAL_TOPIC.titleZh,
+      summary: EXISTENTIAL_TOPIC.summary,
+      summaryZh: EXISTENTIAL_TOPIC.summaryZh,
+      body: EXISTENTIAL_TOPIC.body,
+      bodyZh: EXISTENTIAL_TOPIC.bodyZh,
+      timeline: EXISTENTIAL_TOPIC.timeline,
+      figures: EXISTENTIAL_TOPIC.figures,
+      timelineChina: EXISTENTIAL_TOPIC.timelineChina,
+      figuresChina: EXISTENTIAL_TOPIC.figuresChina,
+      fitClient: EXISTENTIAL_TOPIC.fitClient,
+      fitPractitioner: EXISTENTIAL_TOPIC.fitPractitioner,
+      category: EXISTENTIAL_TOPIC.category,
+      school: EXISTENTIAL_TOPIC.school,
+      status: EXISTENTIAL_TOPIC.status,
+    },
+    create: {
+      slug: EXISTENTIAL_TOPIC.slug,
+      title: EXISTENTIAL_TOPIC.title,
+      titleZh: EXISTENTIAL_TOPIC.titleZh,
+      summary: EXISTENTIAL_TOPIC.summary,
+      summaryZh: EXISTENTIAL_TOPIC.summaryZh,
+      body: EXISTENTIAL_TOPIC.body,
+      bodyZh: EXISTENTIAL_TOPIC.bodyZh,
+      timeline: EXISTENTIAL_TOPIC.timeline,
+      figures: EXISTENTIAL_TOPIC.figures,
+      timelineChina: EXISTENTIAL_TOPIC.timelineChina,
+      figuresChina: EXISTENTIAL_TOPIC.figuresChina,
+      fitClient: EXISTENTIAL_TOPIC.fitClient,
+      fitPractitioner: EXISTENTIAL_TOPIC.fitPractitioner,
+      category: EXISTENTIAL_TOPIC.category,
+      school: EXISTENTIAL_TOPIC.school,
+      status: EXISTENTIAL_TOPIC.status,
     },
   });
 
