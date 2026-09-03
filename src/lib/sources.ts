@@ -163,4 +163,28 @@ export const SOURCES: SourceSeed[] = [
     dailyLimit: 8,
     defaultCategory: "research",
   },
+  {
+    name: "Journal of Psychological Science",
+    nameZh: "心理科学",
+    rssUrl: "http://rss.cnki.net/grid20/rss.aspx?journal=XLKX",
+    lang: "zh",
+    dailyLimit: 8,
+    defaultCategory: "research",
+  },
+  {
+    name: "Chinese Mental Health Journal",
+    nameZh: "中国心理卫生杂志",
+    rssUrl: "http://rss.cnki.net/grid20/rss.aspx?journal=ZXWS",
+    lang: "zh",
+    dailyLimit: 8,
+    defaultCategory: "research",
+  },
+  {
+    name: "Psychology & Health",
+    nameZh: "心理与健康",
+    rssUrl: "http://rss.cnki.net/grid20/rss.aspx?journal=XLJK",
+    lang: "zh",
+    dailyLimit: 8,
+    defaultCategory: "clinical",
+  },
 ];

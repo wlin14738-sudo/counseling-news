@@ -11,16 +11,34 @@ export type RssItem = {
 };
 
 export async function fetchSourceFeed(source: Source): Promise<RssItem[]> {
-  const parser = new Parser({
-    timeout: 15000,
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (compatible; CounselingNewsBot/1.0; +https://example.com)",
-      Accept: "application/rss+xml, application/atom+xml, application/xml;q=0.9, */*;q=0.8",
-    },
-  });
+  const parser = new Parser();
 
-  const feed = await parser.parseURL(source.rssUrl);
+  // Fetch the raw feed ourselves and parse the decoded text. This handles
+  // gzip and CJK encodings more reliably than rss-parser.parseURL (e.g. CNKI).
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  let xml: string;
+  try {
+    const res = await fetch(source.rssUrl, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (compatible; CounselingNewsBot/1.0; +https://example.com)",
+        Accept: "application/rss+xml, application/atom+xml, application/xml;q=0.9, */*;q=0.8",
+      },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    xml = await res.text();
+  } catch (e) {
+    if ((e as Error).name === "AbortError") {
+      throw new Error("Feed timed out");
+    }
+    throw new Error(`Failed to fetch feed: ${(e as Error).message}`);
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  const feed = await parser.parseString(xml);
   const items: RssItem[] = [];
 
   for (const item of feed.items) {
