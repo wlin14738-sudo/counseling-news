@@ -147,4 +147,20 @@ export const SOURCES: SourceSeed[] = [
     defaultCategory: "education",
     defaultSchool: "mindfulness",
   },
+  {
+    name: "Chinese Journal of Health Psychology",
+    nameZh: "中国健康心理学杂志",
+    rssUrl: "http://rss.cnki.net/grid20/rss.aspx?journal=JKXL",
+    lang: "zh",
+    dailyLimit: 8,
+    defaultCategory: "research",
+  },
+  {
+    name: "Psychological Development and Education",
+    nameZh: "心理发展与教育",
+    rssUrl: "http://rss.cnki.net/grid20/rss.aspx?journal=XLFZ",
+    lang: "zh",
+    dailyLimit: 8,
+    defaultCategory: "research",
+  },
 ];
